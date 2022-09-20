@@ -11,7 +11,7 @@ WORKDIR ./demo/
 RUN make CC=afl-gcc CXX=afl-g++
 COPY fuzzers/fuzz_cjson_parser.cpp .
 RUN cp ../*.o .
-RUN afl-g++ fuzz1.cpp -o /fuzzJsonParse CJsonObject.o cJSON.o -m64 -ggdb
+RUN afl-g++ fuzz_cjson_parser.cpp -o /fuzzJsonParse CJsonObject.o cJSON.o -m64 -ggdb
 
 
 ENTRYPOINT ["afl-fuzz", "-i", "/jsonCorpus", "-o", "/jsonOut"]
