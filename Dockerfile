@@ -1,7 +1,6 @@
-FROM fuzzers/afl:2.52 as builder
+FROM fuzzers/aflplusplus:3.12c AS builder
 
-RUN apt-get update
-RUN apt install -y make automake autotools-dev
+RUN apt-get update && apt-get install -y make automake autotools-dev
 ADD . /CJsonObject
 WORKDIR /CJsonObject
 RUN mkdir /jsonCorpus
@@ -12,7 +11,7 @@ ADD fuzzers/fuzz_cjson_parser.cpp .
 RUN cp ../*.o .
 RUN afl-g++ fuzz_cjson_parser.cpp -o /fuzzJsonParse CJsonObject.o cJSON.o -m64 -ggdb
 
-FROM fuzzers/afl:2.52
+FROM fuzzers/aflplusplus:3.12c
 COPY --from=builder /jsonCorpus /testsuite
 COPY --from=builder /fuzzJsonParse /
 
